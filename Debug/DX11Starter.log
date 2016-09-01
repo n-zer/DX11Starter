@@ -1,2 +1,17 @@
-﻿  Mesh.cpp
-  DX11Starter.vcxproj -> D:\Users\Mike\My Documents\GitHub\DX11Starter\Debug\DX11Starter.exe
+﻿Build started 9/1/2016 6:02:14 PM.
+     1>Project "C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\DX11Starter.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Game.cpp
+         Game.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\DX11Starter.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\DX11Starter.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\DX11Starter.lib" /MACHINE:X86 Debug\DXCore.obj
+         Debug\Game.obj
+         Debug\Main.obj
+         Debug\Mesh.obj
+         Debug\SimpleShader.obj
+         DX11Starter.vcxproj -> C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\DX11Starter.exe
+     1>Done Building Project "C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\DX11Starter.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.63

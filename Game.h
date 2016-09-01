@@ -35,7 +35,7 @@ private:
 	// Buffers to hold actual geometry data
 	//ID3D11Buffer* vertexBuffer;
 	//ID3D11Buffer* indexBuffer;
-	std::vector<Mesh> meshes;
+	std::vector<Mesh*> meshes;
 
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;
