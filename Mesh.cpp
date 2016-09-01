@@ -2,6 +2,8 @@
 
 Mesh::Mesh(Vertex* verts, unsigned int vertCount, unsigned int* inds, unsigned int indCount, ID3D11Device* dev)
 {
+	vertexBuffer = 0;
+	indexBuffer = 0;
 	// Create the VERTEX BUFFER description -----------------------------------
 	// - The description is created on the stack because we only need
 	//    it to create the buffer.  The description is then useless.
