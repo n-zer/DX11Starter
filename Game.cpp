@@ -215,7 +215,7 @@ void Game::CreateBasicGeometry()
 	// - Once we do this, we'll NEVER CHANGE THE BUFFER AGAIN
 	device->CreateBuffer(&ibd, &initialIndexData, &indexBuffer);*/
 
-	meshes.push_back(Mesh(vertices, sizeof(vertices), indices, sizeof(indices),device));
+	meshes.push_back(Mesh(vertices, sizeof(vertices)/sizeof(Vertex), indices, sizeof(indices)/sizeof(unsigned int),device));
 }
 
 
@@ -286,7 +286,7 @@ void Game::Draw(float deltaTime, float totalTime)
 	vertexShader->SetShader();
 	pixelShader->SetShader();
 
-	for (Mesh m : meshes)
+	for (Mesh &m : meshes)
 	{
 		// Set buffers in the input assembler
 		//  - Do this ONCE PER OBJECT you're drawing, since each object might
