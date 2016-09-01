@@ -21,8 +21,9 @@ Game::Game(HINSTANCE hInstance)
 		true)			   // Show extra stats (fps) in title bar?
 {
 	// Initialize fields
-	vertexBuffer = 0;
-	indexBuffer = 0;
+	//vertexBuffer = 0;
+	//indexBuffer = 0;
+	meshes = std::vector<Mesh>();
 	vertexShader = 0;
 	pixelShader = 0;
 
@@ -42,8 +43,8 @@ Game::~Game()
 {
 	// Release any (and all!) DirectX objects
 	// we've made in the Game class
-	if (vertexBuffer) { vertexBuffer->Release(); }
-	if (indexBuffer) { indexBuffer->Release(); }
+	//if (vertexBuffer) { vertexBuffer->Release(); }
+	//if (indexBuffer) { indexBuffer->Release(); }
 
 	// Delete our simple shader objects, which
 	// will clean up their own internal DirectX stuff
@@ -169,13 +170,13 @@ void Game::CreateBasicGeometry()
 	// - Indices are technically not required if the vertices are in the buffer 
 	//    in the correct order and each one will be used exactly once
 	// - But just to see how it's done...
-	int indices[] = { 0, 1, 2 };
+	unsigned int indices[] = { 0, 1, 2 };
 
 
 	// Create the VERTEX BUFFER description -----------------------------------
 	// - The description is created on the stack because we only need
 	//    it to create the buffer.  The description is then useless.
-	D3D11_BUFFER_DESC vbd;
+	/*D3D11_BUFFER_DESC vbd;
 	vbd.Usage				= D3D11_USAGE_IMMUTABLE;
 	vbd.ByteWidth			= sizeof(Vertex) * 3;       // 3 = number of vertices in the buffer
 	vbd.BindFlags			= D3D11_BIND_VERTEX_BUFFER; // Tells DirectX this is a vertex buffer
@@ -212,7 +213,9 @@ void Game::CreateBasicGeometry()
 
 	// Actually create the buffer with the initial data
 	// - Once we do this, we'll NEVER CHANGE THE BUFFER AGAIN
-	device->CreateBuffer(&ibd, &initialIndexData, &indexBuffer);
+	device->CreateBuffer(&ibd, &initialIndexData, &indexBuffer);*/
+
+	meshes.push_back(Mesh(vertices, sizeof(vertices), indices, sizeof(indices),device));
 }
 
 
