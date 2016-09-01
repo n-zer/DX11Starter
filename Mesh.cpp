@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh(Vertex* verts, int vertCount, unsigned int* inds, int indCount, ID3D11Device* dev)
+Mesh::Mesh(Vertex* verts, unsigned int vertCount, unsigned int* inds, unsigned int indCount, ID3D11Device* dev)
 {
 	// Create the VERTEX BUFFER description -----------------------------------
 	// - The description is created on the stack because we only need

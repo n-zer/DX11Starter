@@ -1,16 +1,2 @@
-﻿  Mesh.cpp
-d:\users\mike\my documents\github\dx11starter\mesh.cpp(4): error C2511: 'Mesh::Mesh(Vertex *,int,unsigned int *,int,ID3D11Device *)': overloaded member function not found in 'Mesh'
-  d:\users\mike\my documents\github\dx11starter\mesh.h(5): note: see declaration of 'Mesh'
-d:\users\mike\my documents\github\dx11starter\mesh.cpp(23): error C2597: illegal reference to non-static member 'Mesh::vertexBuffer'
-d:\users\mike\my documents\github\dx11starter\mesh.cpp(23): error C2664: 'HRESULT ID3D11Device::CreateBuffer(const D3D11_BUFFER_DESC *,const D3D11_SUBRESOURCE_DATA *,ID3D11Buffer **)': cannot convert argument 3 from 'ID3D11Buffer *Mesh::* ' to 'ID3D11Buffer **'
-  d:\users\mike\my documents\github\dx11starter\mesh.cpp(23): note: There is no context in which this conversion is possible
-d:\users\mike\my documents\github\dx11starter\mesh.cpp(45): error C2597: illegal reference to non-static member 'Mesh::indexBuffer'
-d:\users\mike\my documents\github\dx11starter\mesh.cpp(45): error C2664: 'HRESULT ID3D11Device::CreateBuffer(const D3D11_BUFFER_DESC *,const D3D11_SUBRESOURCE_DATA *,ID3D11Buffer **)': cannot convert argument 3 from 'ID3D11Buffer *Mesh::* ' to 'ID3D11Buffer **'
-  d:\users\mike\my documents\github\dx11starter\mesh.cpp(45): note: There is no context in which this conversion is possible
-  Main.cpp
-  Game.cpp
-d:\users\mike\my documents\github\dx11starter\game.cpp(218): error C2440: '<function-style-cast>': cannot convert from 'initializer list' to 'Mesh'
-  d:\users\mike\my documents\github\dx11starter\game.cpp(218): note: No constructor could take the source type, or constructor overload resolution was ambiguous
-d:\users\mike\my documents\github\dx11starter\game.cpp(294): error C2065: 'vertexBuffer': undeclared identifier
-d:\users\mike\my documents\github\dx11starter\game.cpp(295): error C2065: 'indexBuffer': undeclared identifier
-  Generating Code...
+﻿  Game.cpp
+  DX11Starter.vcxproj -> D:\Users\Mike\My Documents\GitHub\DX11Starter\Debug\DX11Starter.exe
