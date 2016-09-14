@@ -23,7 +23,7 @@ Game::Game(HINSTANCE hInstance)
 	// Initialize fields
 	//vertexBuffer = 0;
 	//indexBuffer = 0;
-	meshes = std::vector<Mesh*>();
+	entities = std::vector<Entity*>();
 	vertexShader = 0;
 	pixelShader = 0;
 
@@ -48,8 +48,8 @@ Game::~Game()
 
 	// Delete our simple shader objects, which
 	// will clean up their own internal DirectX stuff
-	for (Mesh* m : meshes)
-		delete m;
+	for (Entity* e : entities)
+		delete e;
 	delete vertexShader;
 	delete pixelShader;
 }
@@ -115,8 +115,8 @@ void Game::CreateMatrices()
 	// - You'll notice a "transpose" happening below, which is redundant for
 	//   an identity matrix.  This is just to show that HLSL expects a different
 	//   matrix (column major vs row major) than the DirectX Math library
-	XMMATRIX W = XMMatrixIdentity();
-	XMStoreFloat4x4(&worldMatrix, XMMatrixTranspose(W)); // Transpose for HLSL!
+	//XMMATRIX W = XMMatrixIdentity();
+	//XMStoreFloat4x4(&worldMatrix, XMMatrixTranspose(W)); // Transpose for HLSL!
 
 	// Create the View matrix
 	// - In an actual game, recreate this matrix every time the camera 
@@ -174,9 +174,9 @@ void Game::CreateBasicGeometry()
 	// - But just to see how it's done...
 	unsigned int indices[] = { 0, 1, 2 };
 
-	meshes.push_back(new Mesh(vertices, sizeof(vertices)/sizeof(Vertex), indices, sizeof(indices)/sizeof(unsigned int),device));
+	entities.push_back(new Entity(new Mesh(vertices, sizeof(vertices)/sizeof(Vertex), indices, sizeof(indices)/sizeof(unsigned int),device)));
 
-	Vertex vertices2[] =
+	/*Vertex vertices2[] =
 	{
 		{ XMFLOAT3(+0.0f, 0.0f, +1.0f), red },
 		{ XMFLOAT3(+1.5f, -2.0f, +1.0f), blue },
@@ -206,7 +206,7 @@ void Game::CreateBasicGeometry()
 	// - But just to see how it's done...
 	unsigned int indices3[] = { 0, 1, 2 };
 
-	meshes.push_back(new Mesh(vertices3, sizeof(vertices3) / sizeof(Vertex), indices3, sizeof(indices3) / sizeof(unsigned int), device));
+	meshes.push_back(new Mesh(vertices3, sizeof(vertices3) / sizeof(Vertex), indices3, sizeof(indices3) / sizeof(unsigned int), device));*/
 }
 
 
@@ -236,6 +236,7 @@ void Game::Update(float deltaTime, float totalTime)
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
+	entities[0]->PositionDelta(XMFLOAT3(1*deltaTime, 0, 0));
 }
 
 // --------------------------------------------------------
@@ -256,29 +257,33 @@ void Game::Draw(float deltaTime, float totalTime)
 		1.0f,
 		0);
 
-	// Send data to shader variables
-	//  - Do this ONCE PER OBJECT you're drawing
-	//  - This is actually a complex process of copying data to a local buffer
-	//    and then copying that entire buffer to the GPU.  
-	//  - The "SimpleShader" class handles all of that for you.
-	vertexShader->SetMatrix4x4("world", worldMatrix);
-	vertexShader->SetMatrix4x4("view", viewMatrix);
-	vertexShader->SetMatrix4x4("projection", projectionMatrix);
-
-	// Once you've set all of the data you care to change for
-	// the next draw call, you need to actually send it to the GPU
-	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
-	vertexShader->CopyAllBufferData();
-
-	// Set the vertex and pixel shaders to use for the next Draw() command
-	//  - These don't technically need to be set every frame...YET
-	//  - Once you start applying different shaders to different objects,
-	//    you'll need to swap the current shaders before each draw
-	vertexShader->SetShader();
-	pixelShader->SetShader();
-
-	for (Mesh* m : meshes)
+	for (Entity* e : entities)
 	{
+
+		// Send data to shader variables
+		//  - Do this ONCE PER OBJECT you're drawing
+		//  - This is actually a complex process of copying data to a local buffer
+		//    and then copying that entire buffer to the GPU.  
+		//  - The "SimpleShader" class handles all of that for you.
+		DirectX::XMFLOAT4X4 wm;
+		XMStoreFloat4x4(&wm, e->GetWorldMatrix());
+		vertexShader->SetMatrix4x4("world",  wm);
+		vertexShader->SetMatrix4x4("view", viewMatrix);
+		vertexShader->SetMatrix4x4("projection", projectionMatrix);
+
+		// Once you've set all of the data you care to change for
+		// the next draw call, you need to actually send it to the GPU
+		//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
+		vertexShader->CopyAllBufferData();
+
+		// Set the vertex and pixel shaders to use for the next Draw() command
+		//  - These don't technically need to be set every frame...YET
+		//  - Once you start applying different shaders to different objects,
+		//    you'll need to swap the current shaders before each draw
+		vertexShader->SetShader();
+		pixelShader->SetShader();
+
+		Mesh* m = e->GetMesh();
 		// Set buffers in the input assembler
 		//  - Do this ONCE PER OBJECT you're drawing, since each object might
 		//    have different geometry.

@@ -4,6 +4,7 @@
 class Mesh
 {
 public:
+	Mesh();
 	Mesh(Vertex* verts,unsigned int vertCount, unsigned int* inds, unsigned int indCount, ID3D11Device* dev);
 	~Mesh();
 	ID3D11Buffer* GetVertexBuffer();

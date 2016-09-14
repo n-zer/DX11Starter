@@ -1,5 +1,8 @@
 #include "Mesh.h"
 
+Mesh::Mesh() {
+
+}
 Mesh::Mesh(Vertex* verts, unsigned int vertCount, unsigned int* inds, unsigned int indCount, ID3D11Device* dev)
 {
 	vertexBuffer = 0;

@@ -4,6 +4,7 @@
 #include "SimpleShader.h"
 #include <DirectXMath.h>
 #include "Mesh.h"
+#include "Entity.h"
 
 class Game 
 	: public DXCore
@@ -35,14 +36,14 @@ private:
 	// Buffers to hold actual geometry data
 	//ID3D11Buffer* vertexBuffer;
 	//ID3D11Buffer* indexBuffer;
-	std::vector<Mesh*> meshes;
+	std::vector<Entity*> entities;
 
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;
 	SimplePixelShader* pixelShader;
 
 	// The matrices to go from model space to screen space
-	DirectX::XMFLOAT4X4 worldMatrix;
+	//DirectX::XMFLOAT4X4 worldMatrix;
 	DirectX::XMFLOAT4X4 viewMatrix;
 	DirectX::XMFLOAT4X4 projectionMatrix;
 
