@@ -5,12 +5,22 @@ Camera::Camera() {
 	rotationY = 0;
 	XMStoreFloat4(&rotationQuat, XMQuaternionRotationRollPitchYaw(0, rotationX, rotationY));
 	position = XMFLOAT3(0, 0, 0);
+
 	//direction = XMFLOAT3(0, 0, 1);
 	Update();
 }
 
 Camera::~Camera() {
 
+}
+
+void Camera::CreateProjectionMatrix(float width, float height) {
+	XMMATRIX P = XMMatrixPerspectiveFovLH(
+		0.25f * 3.1415926535f,		// Field of View Angle
+		(float)width / height,		// Aspect ratio
+		0.1f,						// Near clip plane distance
+		100.0f);					// Far clip plane distance
+	XMStoreFloat4x4(&projection, XMMatrixTranspose(P)); // Transpose for HLSL!
 }
 
 XMFLOAT4X4 Camera::GetProjection() {

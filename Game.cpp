@@ -27,6 +27,9 @@ Game::Game(HINSTANCE hInstance)
 	vertexShader = 0;
 	pixelShader = 0;
 	mainCamera = new Camera();
+	mainCamera->CreateProjectionMatrix(width, height);
+	prevMousePos.x = 0;
+	prevMousePos.y = 0;
 
 #if defined(DEBUG) || defined(_DEBUG)
 	// Do we want a console window?  Probably only in debug mode
@@ -144,7 +147,7 @@ void Game::CreateMatrices()
 		(float)width / height,		// Aspect ratio
 		0.1f,						// Near clip plane distance
 		100.0f);					// Far clip plane distance
-	XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
+	//XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
 }
 
 
@@ -176,7 +179,7 @@ void Game::CreateBasicGeometry()
 	// - But just to see how it's done...
 	unsigned int indices[] = { 0, 1, 2 };
 
-	entities.push_back(new Entity(new Mesh(vertices, sizeof(vertices)/sizeof(Vertex), indices, sizeof(indices)/sizeof(unsigned int),device)));
+	entities.push_back(new Entity(new Mesh(vertices, sizeof(vertices) / sizeof(Vertex), indices, sizeof(indices) / sizeof(unsigned int), device), new Material(vertexShader, pixelShader)));
 
 	/*Vertex vertices2[] =
 	{
@@ -245,7 +248,8 @@ void Game::Update(float deltaTime, float totalTime)
 	}
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
-		mainCamera->RotationDelta(0, -1 * deltaTime);
+		//mainCamera->RotationDelta(0, -1 * deltaTime);
+		mainCamera->RelativePositionDelta(1 * deltaTime, 0, 0);
 	}
 	if (GetAsyncKeyState('S') & 0x8000)
 	{
@@ -253,7 +257,7 @@ void Game::Update(float deltaTime, float totalTime)
 	}
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
-		mainCamera->RotationDelta(0, 1 * deltaTime);
+		mainCamera->RelativePositionDelta(-1 * deltaTime, 0, 0);
 	}
 	mainCamera->Update();
 }
@@ -278,31 +282,8 @@ void Game::Draw(float deltaTime, float totalTime)
 
 	for (Entity* e : entities)
 	{
-
-		// Send data to shader variables
-		//  - Do this ONCE PER OBJECT you're drawing
-		//  - This is actually a complex process of copying data to a local buffer
-		//    and then copying that entire buffer to the GPU.  
-		//  - The "SimpleShader" class handles all of that for you.
-		DirectX::XMFLOAT4X4 wm;
-		XMStoreFloat4x4(&wm, e->GetWorldMatrix());
-		vertexShader->SetMatrix4x4("world",  wm);
-		vertexShader->SetMatrix4x4("view", mainCamera->GetView());
-		vertexShader->SetMatrix4x4("projection", projectionMatrix);
-
-		// Once you've set all of the data you care to change for
-		// the next draw call, you need to actually send it to the GPU
-		//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
-		vertexShader->CopyAllBufferData();
-
-		// Set the vertex and pixel shaders to use for the next Draw() command
-		//  - These don't technically need to be set every frame...YET
-		//  - Once you start applying different shaders to different objects,
-		//    you'll need to swap the current shaders before each draw
-		vertexShader->SetShader();
-		pixelShader->SetShader();
-
-		Mesh* m = e->GetMesh();
+		e->PrepareMaterial(mainCamera->GetView(), mainCamera->GetProjection());
+		Mesh *m = e->GetMesh();
 		// Set buffers in the input assembler
 		//  - Do this ONCE PER OBJECT you're drawing, since each object might
 		//    have different geometry.
@@ -318,7 +299,7 @@ void Game::Draw(float deltaTime, float totalTime)
 		//  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
 		//     vertices in the currently set VERTEX BUFFER
 		context->DrawIndexed(
-			m->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
+			e->GetMesh()->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
 			0,     // Offset to the first index we want to use
 			0);    // Offset to add to each index when looking up vertices
 	}
@@ -340,6 +321,7 @@ void Game::Draw(float deltaTime, float totalTime)
 void Game::OnMouseDown(WPARAM buttonState, int x, int y)
 {
 	// Add any custom code here...
+
 
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
@@ -371,10 +353,13 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
 	// Add any custom code here...
-
+	mainCamera->RotationDelta(-(y - prevMousePos.y) *.01, (x - prevMousePos.x)*.01);
+	
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;
+
+	
 }
 
 // --------------------------------------------------------

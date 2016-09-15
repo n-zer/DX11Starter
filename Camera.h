@@ -11,6 +11,7 @@ public:
 	XMFLOAT4X4 GetView();
 	void RelativePositionDelta(float x, float y, float z);
 	void RotationDelta(float x, float y);
+	void CreateProjectionMatrix(float width, float height);
 private:
 	XMFLOAT4X4 view;
 	XMFLOAT4X4 projection;
