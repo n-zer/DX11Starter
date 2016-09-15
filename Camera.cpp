@@ -1,0 +1,50 @@
+#include "Camera.h"
+
+Camera::Camera() {
+	rotationX = 0;
+	rotationY = 0;
+	XMStoreFloat4(&rotationQuat, XMQuaternionRotationRollPitchYaw(0, rotationX, rotationY));
+	position = XMFLOAT3(0, 0, 0);
+	//direction = XMFLOAT3(0, 0, 1);
+	Update();
+}
+
+Camera::~Camera() {
+
+}
+
+XMFLOAT4X4 Camera::GetProjection() {
+	return projection;
+}
+
+XMFLOAT4X4 Camera::GetView() {
+	return view;
+}
+
+void Camera::RelativePositionDelta(float x, float y, float z)
+{
+	XMFLOAT3 delta = XMFLOAT3(x, y, z);
+	XMVECTOR delt = XMLoadFloat3(&delta);
+	XMVECTOR rotQuat = XMLoadFloat4(&rotationQuat);
+	XMStoreFloat3(&delta, XMVector3Rotate(delt, rotQuat));
+	position.x += delta.x;
+	position.y += delta.y;
+	position.z += delta.z;
+
+}
+
+void Camera::RotationDelta(float x, float y) {
+	rotationX += x;
+	rotationY += y;
+}
+
+void Camera::Update() {
+	XMFLOAT3 forward = XMFLOAT3(0, 0, 1);
+	XMFLOAT3 up = XMFLOAT3(0, 1, 0);
+	XMVECTOR rotationQuaternion = XMQuaternionRotationRollPitchYaw(rotationX, rotationY,0);
+	XMStoreFloat4(&rotationQuat, rotationQuaternion);
+	XMVECTOR newDirection = XMLoadFloat3(&forward);
+	newDirection = XMVector3Rotate(newDirection, rotationQuaternion);
+	XMMATRIX newView = XMMatrixLookToLH(XMLoadFloat3(&position), newDirection, XMLoadFloat3(&up));
+	XMStoreFloat4x4(&view,XMMatrixTranspose(newView));
+}

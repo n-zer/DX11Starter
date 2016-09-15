@@ -26,6 +26,7 @@ Game::Game(HINSTANCE hInstance)
 	entities = std::vector<Entity*>();
 	vertexShader = 0;
 	pixelShader = 0;
+	mainCamera = new Camera();
 
 #if defined(DEBUG) || defined(_DEBUG)
 	// Do we want a console window?  Probably only in debug mode
@@ -52,6 +53,7 @@ Game::~Game()
 		delete e;
 	delete vertexShader;
 	delete pixelShader;
+	delete mainCamera;
 }
 
 // --------------------------------------------------------
@@ -132,7 +134,7 @@ void Game::CreateMatrices()
 		pos,     // The position of the "camera"
 		dir,     // Direction the camera is looking
 		up);     // "Up" direction in 3D space (prevents roll)
-	XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(V)); // Transpose for HLSL!
+	//XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(V)); // Transpose for HLSL!
 
 	// Create the Projection matrix
 	// - This should match the window's aspect ratio, and also update anytime
@@ -236,7 +238,24 @@ void Game::Update(float deltaTime, float totalTime)
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
-	entities[0]->PositionDelta(XMFLOAT3(1*deltaTime, 0, 0));
+	//entities[0]->PositionDelta(XMFLOAT3(1*deltaTime, 0, 0));
+	if (GetAsyncKeyState('W') & 0x8000)
+	{
+		mainCamera->RelativePositionDelta(0, 0, 1*deltaTime);
+	}
+	if (GetAsyncKeyState('A') & 0x8000)
+	{
+		mainCamera->RotationDelta(0, -1 * deltaTime);
+	}
+	if (GetAsyncKeyState('S') & 0x8000)
+	{
+		mainCamera->RelativePositionDelta(0, 0, -1*deltaTime);
+	}
+	if (GetAsyncKeyState('D') & 0x8000)
+	{
+		mainCamera->RotationDelta(0, 1 * deltaTime);
+	}
+	mainCamera->Update();
 }
 
 // --------------------------------------------------------
@@ -268,7 +287,7 @@ void Game::Draw(float deltaTime, float totalTime)
 		DirectX::XMFLOAT4X4 wm;
 		XMStoreFloat4x4(&wm, e->GetWorldMatrix());
 		vertexShader->SetMatrix4x4("world",  wm);
-		vertexShader->SetMatrix4x4("view", viewMatrix);
+		vertexShader->SetMatrix4x4("view", mainCamera->GetView());
 		vertexShader->SetMatrix4x4("projection", projectionMatrix);
 
 		// Once you've set all of the data you care to change for
