@@ -179,7 +179,8 @@ void Game::CreateBasicGeometry()
 	// - But just to see how it's done...
 	unsigned int indices[] = { 0, 1, 2 };
 
-	entities.push_back(new Entity(new Mesh(vertices, sizeof(vertices) / sizeof(Vertex), indices, sizeof(indices) / sizeof(unsigned int), device), new Material(vertexShader, pixelShader)));
+	//entities.push_back(new Entity(new Mesh(vertices, sizeof(vertices) / sizeof(Vertex), indices, sizeof(indices) / sizeof(unsigned int), device), new Material(vertexShader, pixelShader)));
+	entities.push_back(new Entity(new Mesh("assets\\cube.obj", device), new Material(vertexShader, pixelShader)));
 
 	/*Vertex vertices2[] =
 	{

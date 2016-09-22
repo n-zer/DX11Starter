@@ -1,5 +1,24 @@
-﻿  Game.cpp
+﻿  compilation object save succeeded; see D:\Profiles\mat8885\DX11Starter\Debug\PixelShader.cso
+  compilation object save succeeded; see D:\Profiles\mat8885\DX11Starter\Debug\VertexShader.cso
+  SimpleShader.cpp
+  Mesh.cpp
+  Material.cpp
+  Main.cpp
+  Game.cpp
 d:\profiles\mat8885\dx11starter\game.cpp(30): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-d:\profiles\mat8885\dx11starter\game.cpp(356): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+d:\profiles\mat8885\dx11starter\game.cpp(357): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Entity.cpp
+  DXCore.cpp
+  Camera.cpp
+  Generating Code...
+LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/PROFILE' specification
+Camera.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
   DX11Starter.vcxproj -> D:\Profiles\mat8885\DX11Starter\Debug\DX11Starter.exe
   DX11Starter.vcxproj -> D:\Profiles\mat8885\DX11Starter\Debug\DX11Starter.pdb (Full PDB)
+  D:\Profiles\mat8885\DX11Starter\assets\cone.obj
+  D:\Profiles\mat8885\DX11Starter\assets\cube.obj
+  D:\Profiles\mat8885\DX11Starter\assets\cylinder.obj
+  D:\Profiles\mat8885\DX11Starter\assets\helix.obj
+  D:\Profiles\mat8885\DX11Starter\assets\sphere.obj
+  D:\Profiles\mat8885\DX11Starter\assets\torus.obj
+  6 File(s) copied
