@@ -3,6 +3,7 @@
 #include "Material.h"
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
+#include "DirectionalLight.h"
 using namespace DirectX;
 class Entity {
 public:
@@ -14,7 +15,7 @@ public:
 	void SetScale(XMFLOAT3 sc);
 	XMMATRIX GetWorldMatrix();
 	Mesh* GetMesh();
-	void PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection);
+	void PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection, DirectionalLight dLight);
 private:
 	XMFLOAT4X4 worldMatrix;
 	bool wmDirty;

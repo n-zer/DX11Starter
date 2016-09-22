@@ -1,4 +1,3 @@
-
 // Struct representing the data we expect to receive from earlier pipeline stages
 // - Should match the output of our corresponding vertex shader
 // - The name of the struct itself is unimportant
@@ -12,7 +11,18 @@ struct VertexToPixel
 	//  |    |                |
 	//  v    v                v
 	float4 position		: SV_POSITION;
-	float4 color		: COLOR;
+	float3 normal		: NORMAL;
+};
+
+struct DirectionalLight
+{
+	float4 AmbientColor;
+	float4 DiffuseColor;
+	float3 Direction;
+};
+
+cbuffer externalData : register(b0) {
+	DirectionalLight light;
 };
 
 // --------------------------------------------------------
@@ -26,10 +36,14 @@ struct VertexToPixel
 // --------------------------------------------------------
 float4 main(VertexToPixel input) : SV_TARGET
 {
+	float3 invDirection = float3(-light.Direction.x,-light.Direction.y,-light.Direction.z);
+	float lightAmt = saturate(dot(input.normal, invDirection));
 	// Just return the input color
 	// - This color (like most values passing through the rasterizer) is 
 	//   interpolated for each pixel between the corresponding vertices 
 	//   of the triangle we're rendering
 	//return input.color;
-	return float4(1,0,0,1);
+	//return float4(input.normal,1);
+	return (lightAmt*light.DiffuseColor)+light.AmbientColor;
+	//return float4(1, 1, 1, 1);
 }

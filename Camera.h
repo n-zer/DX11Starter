@@ -5,7 +5,7 @@ using namespace DirectX;
 class Camera {
 public:
 	void Update();
-	Camera();
+	Camera(XMFLOAT3 pos);
 	~Camera();
 	XMFLOAT4X4 GetProjection();
 	XMFLOAT4X4 GetView();

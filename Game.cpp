@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Vertex.h"
-
+#define WINDOWWIDTH 1200
+#define WINDOWHEIGHT 960
 // For the DirectX Math library
 using namespace DirectX;
 
@@ -16,8 +17,8 @@ Game::Game(HINSTANCE hInstance)
 	: DXCore( 
 		hInstance,		   // The application's handle
 		"DirectX Game",	   // Text for the window's title bar
-		1280,			   // Width of the window's client area
-		720,			   // Height of the window's client area
+		WINDOWWIDTH,			   // Width of the window's client area
+		WINDOWHEIGHT,			   // Height of the window's client area
 		true)			   // Show extra stats (fps) in title bar?
 {
 	// Initialize fields
@@ -26,8 +27,9 @@ Game::Game(HINSTANCE hInstance)
 	entities = std::vector<Entity*>();
 	vertexShader = 0;
 	pixelShader = 0;
-	mainCamera = new Camera();
+	mainCamera = new Camera(XMFLOAT3(0,0,-10));
 	mainCamera->CreateProjectionMatrix(width, height);
+	SetCursorPos(WINDOWWIDTH / 2, WINDOWHEIGHT / 2);
 	prevMousePos.x = 0;
 	prevMousePos.y = 0;
 
@@ -71,6 +73,11 @@ void Game::Init()
 	LoadShaders();
 	CreateMatrices();
 	CreateBasicGeometry();
+
+	dLight = DirectionalLight();
+	dLight.AmbientColor = XMFLOAT4(0.1, 0.1, 0.1, 1.0);
+	dLight.DiffuseColor = XMFLOAT4(1, 1, 1, 0);
+	dLight.Direction = XMFLOAT3(1, -1, 0);
 
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
@@ -250,7 +257,7 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
 		//mainCamera->RotationDelta(0, -1 * deltaTime);
-		mainCamera->RelativePositionDelta(1 * deltaTime, 0, 0);
+		mainCamera->RelativePositionDelta(-1 * deltaTime, 0, 0);
 	}
 	if (GetAsyncKeyState('S') & 0x8000)
 	{
@@ -258,7 +265,7 @@ void Game::Update(float deltaTime, float totalTime)
 	}
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
-		mainCamera->RelativePositionDelta(-1 * deltaTime, 0, 0);
+		mainCamera->RelativePositionDelta(1 * deltaTime, 0, 0);
 	}
 	mainCamera->Update();
 }
@@ -283,7 +290,7 @@ void Game::Draw(float deltaTime, float totalTime)
 
 	for (Entity* e : entities)
 	{
-		e->PrepareMaterial(mainCamera->GetView(), mainCamera->GetProjection());
+		e->PrepareMaterial(mainCamera->GetView(), mainCamera->GetProjection(), dLight);
 		Mesh *m = e->GetMesh();
 		// Set buffers in the input assembler
 		//  - Do this ONCE PER OBJECT you're drawing, since each object might
@@ -354,8 +361,10 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
 	// Add any custom code here...
-	mainCamera->RotationDelta(-(y - prevMousePos.y) *.01, (x - prevMousePos.x)*.01);
-	
+	if (!firstMouse) mainCamera->RotationDelta((y - prevMousePos.y) *.01, (x - prevMousePos.x)*.01);
+	else
+		firstMouse = false;
+	//SetCursorPos(windowhei)
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;

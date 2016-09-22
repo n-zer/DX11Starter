@@ -1,10 +1,10 @@
 #include "Camera.h"
 
-Camera::Camera() {
+Camera::Camera(XMFLOAT3 pos) {
 	rotationX = 0;
 	rotationY = 0;
 	XMStoreFloat4(&rotationQuat, XMQuaternionRotationRollPitchYaw(0, rotationX, rotationY));
-	position = XMFLOAT3(0, 0, 0);
+	position = pos;
 
 	//direction = XMFLOAT3(0, 0, 1);
 	Update();

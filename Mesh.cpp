@@ -200,7 +200,7 @@ Mesh::Mesh(char* objFile, ID3D11Device * dev) {
 	// Actually create the buffer with the initial data
 	// - Once we do this, we'll NEVER CHANGE THE BUFFER AGAIN
 	dev->CreateBuffer(&vbd, &initialVertexData, &vertexBuffer);
-
+	indexCount = vertCounter;
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
 	ibd.ByteWidth = sizeof(unsigned int) * vertCounter;         // 3 = number of indices in the buffer

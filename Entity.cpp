@@ -48,7 +48,7 @@ Mesh* Entity::GetMesh() {
 	return mesh;
 }
 
-void Entity::PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection) {
+void Entity::PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection, DirectionalLight dLight) {
 	SimpleVertexShader * vertexShader = material->GetVertexShader();
 	SimplePixelShader * pixelShader = material->GetPixelShader();
 	// Send data to shader variables
@@ -73,4 +73,6 @@ void Entity::PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection) {
 	//    you'll need to swap the current shaders before each draw
 	vertexShader->SetShader();
 	pixelShader->SetShader();
+
+	pixelShader->SetData("light", &dLight, sizeof(DirectionalLight));
 }
