@@ -1,9 +1,9 @@
 #include "Entity.h"
 
-Entity::Entity(Mesh* m, Material* mat) {
+Entity::Entity(Mesh* m, Material* mat, XMFLOAT3 pos) {
 	mesh = m;
 	material = mat;
-	position = XMFLOAT3(0, 0, 0);
+	position = pos;
 	rotation = XMFLOAT4X4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
 	scale = XMFLOAT3(1, 1, 1);
 	wmDirty = true;
@@ -48,7 +48,7 @@ Mesh* Entity::GetMesh() {
 	return mesh;
 }
 
-void Entity::PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection, DirectionalLight dLight) {
+void Entity::PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection, DirectionalLight dLight, DirectionalLight dLight2) {
 	SimpleVertexShader * vertexShader = material->GetVertexShader();
 	SimplePixelShader * pixelShader = material->GetPixelShader();
 	// Send data to shader variables
@@ -67,12 +67,14 @@ void Entity::PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection, Directional
 	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
 	vertexShader->CopyAllBufferData();
 
+	pixelShader->SetData("light", &dLight, sizeof(DirectionalLight));
+	pixelShader->SetData("light2", &dLight2, sizeof(DirectionalLight));
+	pixelShader->CopyAllBufferData();
+
 	// Set the vertex and pixel shaders to use for the next Draw() command
 	//  - These don't technically need to be set every frame...YET
 	//  - Once you start applying different shaders to different objects,
 	//    you'll need to swap the current shaders before each draw
 	vertexShader->SetShader();
 	pixelShader->SetShader();
-
-	pixelShader->SetData("light", &dLight, sizeof(DirectionalLight));
 }

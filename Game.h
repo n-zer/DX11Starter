@@ -30,6 +30,7 @@ public:
 	void OnMouseWheel(float wheelDelta,   int x, int y);
 private:
 	DirectionalLight dLight;
+	DirectionalLight dLight2;
 	bool firstMouse = true;
 	// Initialization helper methods - feel free to customize, combine, etc.
 	void LoadShaders(); 

@@ -7,7 +7,7 @@
 using namespace DirectX;
 class Entity {
 public:
-	Entity(Mesh *m, Material* mat);
+	Entity(Mesh *m, Material* mat, XMFLOAT3 pos);
 	~Entity();
 	void PositionDelta(XMFLOAT3 delta);
 	void SetPosition(XMFLOAT3 pos);
@@ -15,7 +15,7 @@ public:
 	void SetScale(XMFLOAT3 sc);
 	XMMATRIX GetWorldMatrix();
 	Mesh* GetMesh();
-	void PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection, DirectionalLight dLight);
+	void PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection, DirectionalLight dLight, DirectionalLight dLight2);
 private:
 	XMFLOAT4X4 worldMatrix;
 	bool wmDirty;

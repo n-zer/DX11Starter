@@ -76,8 +76,13 @@ void Game::Init()
 
 	dLight = DirectionalLight();
 	dLight.AmbientColor = XMFLOAT4(0.1, 0.1, 0.1, 1.0);
-	dLight.DiffuseColor = XMFLOAT4(1, 1, 1, 0);
-	dLight.Direction = XMFLOAT3(1, -1, 0);
+	dLight.DiffuseColor = XMFLOAT4(0, 0, 1, 1);
+	dLight.Direction = XMFLOAT3(1, 1, 1);
+
+	dLight2 = DirectionalLight();
+	dLight2.AmbientColor = XMFLOAT4(0, 0.3, 0.1, 1.0);
+	dLight2.DiffuseColor = XMFLOAT4(1, 0, 0, 1);
+	dLight2.Direction = XMFLOAT3(-1, -1, -1);
 
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
@@ -187,7 +192,8 @@ void Game::CreateBasicGeometry()
 	unsigned int indices[] = { 0, 1, 2 };
 
 	//entities.push_back(new Entity(new Mesh(vertices, sizeof(vertices) / sizeof(Vertex), indices, sizeof(indices) / sizeof(unsigned int), device), new Material(vertexShader, pixelShader)));
-	entities.push_back(new Entity(new Mesh("assets\\cube.obj", device), new Material(vertexShader, pixelShader)));
+	entities.push_back(new Entity(new Mesh("assets\\cube.obj", device), new Material(vertexShader, pixelShader),XMFLOAT3(0,0,0)));
+	entities.push_back(new Entity(new Mesh("assets\\sphere.obj", device), new Material(vertexShader, pixelShader),XMFLOAT3(5,0,0)));
 
 	/*Vertex vertices2[] =
 	{
@@ -290,7 +296,7 @@ void Game::Draw(float deltaTime, float totalTime)
 
 	for (Entity* e : entities)
 	{
-		e->PrepareMaterial(mainCamera->GetView(), mainCamera->GetProjection(), dLight);
+		e->PrepareMaterial(mainCamera->GetView(), mainCamera->GetProjection(), dLight, dLight2);
 		Mesh *m = e->GetMesh();
 		// Set buffers in the input assembler
 		//  - Do this ONCE PER OBJECT you're drawing, since each object might
