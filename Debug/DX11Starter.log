@@ -1,20 +1,16 @@
-﻿Build started 9/22/2016 8:36:27 PM.
+﻿Build started 9/29/2016 7:17:51 PM.
      1>Project "C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\DX11Starter.vcxproj" on node 2 (Build target(s)).
-     1>FxCompile:
-         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe /nologo /E"main" /T ps_5_0 /Fo "C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\PixelShader.cso" /Od /Zi PixelShader.hlsl 
-         compilation object save succeeded; see C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\PixelShader.cso
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Entity.cpp Game.cpp Main.cpp
-         Main.cpp
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\packages\directxtk_desktop_2015.2016.9.15.1\build\native\../../build/native/include/" /ZI /nologo /W3 /WX- /sdl- /Od /Oy- /D HAS_DIRECTXTK /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Camera.cpp Game.cpp
          Game.cpp
-     1>c:\users\mike\documents\visual studio 2015\projects\dx11starter\game.cpp(31): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-     1>c:\users\mike\documents\visual studio 2015\projects\dx11starter\game.cpp(78): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>c:\users\mike\documents\visual studio 2015\projects\dx11starter\game.cpp(83): warning C4305: 'argument': truncation from 'double' to 'float'
-     1>c:\users\mike\documents\visual studio 2015\projects\dx11starter\game.cpp(370): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-         Entity.cpp
+     1>c:\users\mike\documents\visual studio 2015\projects\dx11starter\game.cpp(30): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+     1>c:\users\mike\documents\visual studio 2015\projects\dx11starter\game.cpp(77): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>c:\users\mike\documents\visual studio 2015\projects\dx11starter\game.cpp(82): warning C4305: 'argument': truncation from 'double' to 'float'
+     1>c:\users\mike\documents\visual studio 2015\projects\dx11starter\game.cpp(380): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+         Camera.cpp
          Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\DX11Starter.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\DX11Starter.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\DX11Starter.lib" /MACHINE:X86 /PROFILE Debug\Camera.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\DX11Starter.exe" /INCREMENTAL /NOLOGO "C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\packages\directxtk_desktop_2015.2016.9.15.1\build\native\../../build/native/lib/Win32/Debug/DirectXTKAudioDX.lib" "C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\packages\directxtk_desktop_2015.2016.9.15.1\build\native\../../build/native/lib/Win32/Debug/DirectXTK.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\DX11Starter.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\DX11Starter.lib" /MACHINE:X86 /PROFILE Debug\Camera.obj
          Debug\DXCore.obj
          Debug\Entity.obj
          Debug\Game.obj
@@ -28,15 +24,16 @@
        PostBuildEvent:
          xcopy "C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\assets" "C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\Debug\assets" /e /y /i /r
          :VCEnd
+         C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\assets\artsy hairtie.png
          C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\assets\cone.obj
          C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\assets\cube.obj
          C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\assets\cylinder.obj
          C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\assets\helix.obj
          C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\assets\sphere.obj
          C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\assets\torus.obj
-         6 File(s) copied
+         7 File(s) copied
      1>Done Building Project "C:\Users\Mike\Documents\Visual Studio 2015\Projects\DX11Starter\DX11Starter.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.56
+Time Elapsed 00:00:02.23

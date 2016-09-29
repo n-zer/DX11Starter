@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Vertex.h"
+#include "WICTextureLoader.h"
 #define WINDOWWIDTH 1200
 #define WINDOWHEIGHT 960
 // For the DirectX Math library
@@ -16,9 +17,7 @@ using namespace DirectX;
 Game::Game(HINSTANCE hInstance)
 	: DXCore( 
 		hInstance,		   // The application's handle
-		"DirectX Game",	   // Text for the window's title bar
-		WINDOWWIDTH,			   // Width of the window's client area
-		WINDOWHEIGHT,			   // Height of the window's client area
+		"DirectX Game",			   // Height of the window's client area
 		true)			   // Show extra stats (fps) in title bar?
 {
 	// Initialize fields
@@ -28,8 +27,8 @@ Game::Game(HINSTANCE hInstance)
 	vertexShader = 0;
 	pixelShader = 0;
 	mainCamera = new Camera(XMFLOAT3(0,0,-10));
-	mainCamera->CreateProjectionMatrix(width, height);
-	SetCursorPos(WINDOWWIDTH / 2, WINDOWHEIGHT / 2);
+	mainCamera->CreateProjectionMatrix(width, height, 80);
+	SetCursorPos(width / 2, height / 2);
 	prevMousePos.x = 0;
 	prevMousePos.y = 0;
 
@@ -75,13 +74,13 @@ void Game::Init()
 	CreateBasicGeometry();
 
 	dLight = DirectionalLight();
-	dLight.AmbientColor = XMFLOAT4(0.1, 0.1, 0.1, 1.0);
-	dLight.DiffuseColor = XMFLOAT4(0, 0, 1, 1);
+	dLight.AmbientColor = XMFLOAT4(0.1, 0, 0.1, 1.0);
+	dLight.DiffuseColor = XMFLOAT4(1, 1, 1, 1);
 	dLight.Direction = XMFLOAT3(1, 1, 1);
 
 	dLight2 = DirectionalLight();
-	dLight2.AmbientColor = XMFLOAT4(0, 0.3, 0.1, 1.0);
-	dLight2.DiffuseColor = XMFLOAT4(1, 0, 0, 1);
+	dLight2.AmbientColor = XMFLOAT4(0, 0.15, 0.1, 1.0);
+	dLight2.DiffuseColor = XMFLOAT4(1, 1, 1, 1);
 	dLight2.Direction = XMFLOAT3(-1, -1, -1);
 
 	// Tell the input assembler stage of the pipeline what kind of
@@ -191,9 +190,20 @@ void Game::CreateBasicGeometry()
 	// - But just to see how it's done...
 	unsigned int indices[] = { 0, 1, 2 };
 
+
+	ID3D11ShaderResourceView * textureView;
+	CreateWICTextureFromFile(device, context, L"assets\\artsy hairtie.png", nullptr, &textureView);
+	ID3D11SamplerState * samplerState;
+	D3D11_SAMPLER_DESC samplerStateDesc = {};
+	samplerStateDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerStateDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerStateDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerStateDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerStateDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	device->CreateSamplerState(&samplerStateDesc, &samplerState);
 	//entities.push_back(new Entity(new Mesh(vertices, sizeof(vertices) / sizeof(Vertex), indices, sizeof(indices) / sizeof(unsigned int), device), new Material(vertexShader, pixelShader)));
-	entities.push_back(new Entity(new Mesh("assets\\cube.obj", device), new Material(vertexShader, pixelShader),XMFLOAT3(0,0,0)));
-	entities.push_back(new Entity(new Mesh("assets\\sphere.obj", device), new Material(vertexShader, pixelShader),XMFLOAT3(5,0,0)));
+	entities.push_back(new Entity(new Mesh("assets\\cube.obj", device), new Material(vertexShader, pixelShader, textureView, samplerState), XMFLOAT3(0, 0, 0)));
+	entities.push_back(new Entity(new Mesh("assets\\sphere.obj", device), new Material(vertexShader, pixelShader, textureView, samplerState), XMFLOAT3(5, 0, 0)));
 
 	/*Vertex vertices2[] =
 	{

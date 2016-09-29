@@ -69,6 +69,8 @@ void Entity::PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection, Directional
 
 	pixelShader->SetData("light", &dLight, sizeof(DirectionalLight));
 	pixelShader->SetData("light2", &dLight2, sizeof(DirectionalLight));
+	pixelShader->SetShaderResourceView("diffuseTexture", material->GetTextureView());
+	pixelShader->SetSamplerState("basicSampler", material->GetSamplerState());
 	pixelShader->CopyAllBufferData();
 
 	// Set the vertex and pixel shaders to use for the next Draw() command

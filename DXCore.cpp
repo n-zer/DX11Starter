@@ -30,8 +30,6 @@ LRESULT DXCore::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 DXCore::DXCore(
 	HINSTANCE hInstance,		// The application's handle
 	char* titleBarText,			// Text for the window's title bar
-	unsigned int windowWidth,	// Width of the window's client area
-	unsigned int windowHeight,	// Height of the window's client area
 	bool debugTitleBarStats)	// Show extra stats (fps) in title bar?
 {
 	// Save a static reference to this object.
@@ -43,8 +41,8 @@ DXCore::DXCore(
 	// Save params
 	this->hInstance = hInstance;
 	this->titleBarText = titleBarText;
-	this->width = windowWidth;
-	this->height = windowHeight;
+	this->width = GetSystemMetrics(SM_CXSCREEN);
+	this->height = GetSystemMetrics(SM_CYSCREEN);
 	this->titleBarStats = debugTitleBarStats;
 
 	// Initialize fields
@@ -72,7 +70,10 @@ DXCore::~DXCore()
 	if (depthStencilView) { depthStencilView->Release(); }
 	if (backBufferRTV) { backBufferRTV->Release();}
 
-	if (swapChain) { swapChain->Release();}
+	if (swapChain) { 
+		swapChain->SetFullscreenState(FALSE, NULL);
+		swapChain->Release();
+	}
 	if (context) { context->Release();}
 	if (device) { device->Release();}
 }
@@ -146,6 +147,8 @@ HRESULT DXCore::InitWindow()
 		return HRESULT_FROM_WIN32(error);
 	}
 
+	//swapChain->SetFullscreenState(TRUE, NULL);
+
 	// The window exists but is not visible yet
 	// We need to tell Windows to show it, and how to show it
 	ShowWindow(hWnd, SW_SHOW);
@@ -185,7 +188,7 @@ HRESULT DXCore::InitDirectX()
 	swapDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	swapDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapDesc.Flags = 0;
+	swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	swapDesc.OutputWindow = hWnd;
 	swapDesc.SampleDesc.Count = 1;
 	swapDesc.SampleDesc.Quality = 0;
@@ -210,6 +213,8 @@ HRESULT DXCore::InitDirectX()
 		&dxFeatureLevel,			// This will hold the actual feature level the app will use
 		&context);					// Pointer to our Device Context pointer
 	if (FAILED(hr)) return hr;
+
+	swapChain->SetFullscreenState(TRUE, NULL);
 
 	// The above function created the back buffer render target
 	// for us, but we need a reference to it

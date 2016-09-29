@@ -14,8 +14,6 @@ public:
 	DXCore(
 		HINSTANCE hInstance,		// The application's handle
 		char* titleBarText,			// Text for the window's title bar
-		unsigned int windowWidth,	// Width of the window's client area
-		unsigned int windowHeight,	// Height of the window's client area
 		bool debugTitleBarStats);	// Show extra stats (fps) in title bar?
 	~DXCore();
 

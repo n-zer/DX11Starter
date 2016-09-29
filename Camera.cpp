@@ -14,10 +14,10 @@ Camera::~Camera() {
 
 }
 
-void Camera::CreateProjectionMatrix(float width, float height) {
+void Camera::CreateProjectionMatrix(float width, float height, float fov) {
 	XMMATRIX P = XMMatrixPerspectiveFovLH(
-		0.25f * 3.1415926535f,		// Field of View Angle
-		(float)width / height,		// Aspect ratio
+		fov * (3.1415926535f/180.0f),		// Field of View Angle
+		width / height,		// Aspect ratio
 		0.1f,						// Near clip plane distance
 		100.0f);					// Far clip plane distance
 	XMStoreFloat4x4(&projection, XMMatrixTranspose(P)); // Transpose for HLSL!
