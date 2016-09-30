@@ -41,6 +41,8 @@ private:
 	//ID3D11Buffer* vertexBuffer;
 	//ID3D11Buffer* indexBuffer;
 	std::vector<Entity*> entities;
+	std::vector<ID3D11ShaderResourceView*> textureViews;
+	std::vector<ID3D11SamplerState*> samplerStates;
 
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;

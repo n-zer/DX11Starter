@@ -55,6 +55,10 @@ Game::~Game()
 	// will clean up their own internal DirectX stuff
 	for (Entity* e : entities)
 		delete e;
+	for (ID3D11ShaderResourceView * srv : textureViews)
+		srv->Release();
+	for (ID3D11SamplerState *ss : samplerStates)
+		ss->Release();
 	delete vertexShader;
 	delete pixelShader;
 	delete mainCamera;
@@ -201,6 +205,8 @@ void Game::CreateBasicGeometry()
 	samplerStateDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	samplerStateDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	device->CreateSamplerState(&samplerStateDesc, &samplerState);
+	textureViews.push_back(textureView);
+	samplerStates.push_back(samplerState);
 	//entities.push_back(new Entity(new Mesh(vertices, sizeof(vertices) / sizeof(Vertex), indices, sizeof(indices) / sizeof(unsigned int), device), new Material(vertexShader, pixelShader)));
 	entities.push_back(new Entity(new Mesh("assets\\cube.obj", device), new Material(vertexShader, pixelShader, textureView, samplerState), XMFLOAT3(0, 0, 0)));
 	entities.push_back(new Entity(new Mesh("assets\\sphere.obj", device), new Material(vertexShader, pixelShader, textureView, samplerState), XMFLOAT3(5, 0, 0)));

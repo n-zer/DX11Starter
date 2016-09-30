@@ -71,11 +71,24 @@ DXCore::~DXCore()
 	if (backBufferRTV) { backBufferRTV->Release();}
 
 	if (swapChain) { 
-		swapChain->SetFullscreenState(FALSE, NULL);
+		//swapChain->SetFullscreenState(FALSE, NULL);
 		swapChain->Release();
 	}
 	if (context) { context->Release();}
-	if (device) { device->Release();}
+
+	if (device) { 
+#if defined(DEBUG) || defined(_DEBUG)
+		// If we're in debug mode in visual studio, we also
+		// want to make a "Debug DirectX Device" to see some
+		// errors and warnings in Visual Studio's output window
+		// when things go wrong!
+		ID3D11Debug *debug;
+		device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&debug));
+		//debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+		debug->Release();
+#endif
+		device->Release();
+	}
 }
 
 // --------------------------------------------------------
@@ -188,7 +201,7 @@ HRESULT DXCore::InitDirectX()
 	swapDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	swapDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	swapDesc.Flags = 0;
 	swapDesc.OutputWindow = hWnd;
 	swapDesc.SampleDesc.Count = 1;
 	swapDesc.SampleDesc.Quality = 0;
@@ -214,7 +227,7 @@ HRESULT DXCore::InitDirectX()
 		&context);					// Pointer to our Device Context pointer
 	if (FAILED(hr)) return hr;
 
-	swapChain->SetFullscreenState(TRUE, NULL);
+	//swapChain->SetFullscreenState(TRUE, NULL);
 
 	// The above function created the back buffer render target
 	// for us, but we need a reference to it
